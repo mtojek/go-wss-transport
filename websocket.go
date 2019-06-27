@@ -21,9 +21,9 @@ import (
 
 // WsProtocol is the multiaddr protocol definition for this transport.
 var WsProtocol = ma.Protocol{
-	Code:  477,
-	Name:  "ws",
-	VCode: ma.CodeToVarint(477),
+	Code:  498,
+	Name:  "wss",
+	VCode: ma.CodeToVarint(498),
 }
 
 // WsFmt is multiaddr formatter for WsProtocol
@@ -31,7 +31,7 @@ var WsFmt = mafmt.And(mafmt.TCP, mafmt.Base(WsProtocol.Code))
 
 // WsCodec is the multiaddr-net codec definition for the websocket transport
 var WsCodec = &manet.NetCodec{
-	NetAddrNetworks:  []string{"websocket"},
+	NetAddrNetworks:  []string{"websocket-tls"},
 	ProtocolName:     "ws",
 	ConvertMultiaddr: ConvertWebsocketMultiaddrToNetAddr,
 	ParseNetAddr:     ParseWebsocketNetAddr,
@@ -145,7 +145,7 @@ func (t *WebsocketTransport) wrapListener(l net.Listener, origin *url.URL) (*lis
 	if err != nil {
 		return nil, err
 	}
-	wsma, err := ma.NewMultiaddr("/ws")
+	wsma, err := ma.NewMultiaddr("/wss")
 	if err != nil {
 		return nil, err
 	}

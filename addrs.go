@@ -16,9 +16,9 @@ type Addr struct {
 
 var _ net.Addr = (*Addr)(nil)
 
-// Network returns the network type for a WebSocket, "websocket".
+// Network returns the network type for a WebSocket, "websocket-tls".
 func (addr *Addr) Network() string {
-	return "websocket"
+	return "websocket-tls"
 }
 
 // NewAddr creates a new Addr using the given host string
@@ -55,7 +55,7 @@ func ParseWebsocketNetAddr(a net.Addr) (ma.Multiaddr, error) {
 		return nil, err
 	}
 
-	wsma, err := ma.NewMultiaddr("/ws")
+	wsma, err := ma.NewMultiaddr("/wss")
 	if err != nil {
 		return nil, err
 	}
@@ -69,5 +69,5 @@ func parseMultiaddr(a ma.Multiaddr) (string, error) {
 		return "", err
 	}
 
-	return "ws://" + host, nil
+	return "wss://" + host, nil
 }

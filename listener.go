@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	ma "github.com/multiformats/go-multiaddr"
-	manet "github.com/multiformats/go-multiaddr-net"
+	"github.com/multiformats/go-multiaddr-net"
 )
 
 type listener struct {

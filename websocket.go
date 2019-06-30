@@ -15,22 +15,22 @@ import (
 
 	ws "github.com/gorilla/websocket"
 	ma "github.com/multiformats/go-multiaddr"
-	manet "github.com/multiformats/go-multiaddr-net"
-	mafmt "github.com/whyrusleeping/mafmt"
+	"github.com/multiformats/go-multiaddr-fmt"
+	"github.com/multiformats/go-multiaddr-net"
 )
 
 // WsProtocol is the multiaddr protocol definition for this transport.
-var WsProtocol = ma.Protocol{
+var WssProtocol = ma.Protocol{
 	Code:  498,
 	Name:  "wss",
 	VCode: ma.CodeToVarint(498),
 }
 
 // WsFmt is multiaddr formatter for WsProtocol
-var WsFmt = mafmt.And(mafmt.TCP, mafmt.Base(WsProtocol.Code))
+var WssFmt = mafmt.And(mafmt.TCP, mafmt.Base(WssProtocol.Code))
 
 // WsCodec is the multiaddr-net codec definition for the websocket transport
-var WsCodec = &manet.NetCodec{
+var WssCodec = &manet.NetCodec{
 	NetAddrNetworks:  []string{"websocket-tls"},
 	ProtocolName:     "ws",
 	ConvertMultiaddr: ConvertWebsocketMultiaddrToNetAddr,
@@ -46,12 +46,12 @@ var upgrader = ws.Upgrader{
 }
 
 func init() {
-	err := ma.AddProtocol(WsProtocol)
+	err := ma.AddProtocol(WssProtocol)
 	if err != nil {
 		panic(fmt.Errorf("error registering websocket protocol: %s", err))
 	}
 
-	manet.RegisterNetCodec(WsCodec)
+	manet.RegisterNetCodec(WssCodec)
 }
 
 // WebsocketTransport is the actual go-libp2p transport
@@ -66,11 +66,11 @@ func New(u *tptu.Upgrader) *WebsocketTransport {
 var _ transport.Transport = (*WebsocketTransport)(nil)
 
 func (t *WebsocketTransport) CanDial(a ma.Multiaddr) bool {
-	return WsFmt.Matches(a)
+	return WssFmt.Matches(a)
 }
 
 func (t *WebsocketTransport) Protocols() []int {
-	return []int{WsProtocol.Code}
+	return []int{WssProtocol.Code}
 }
 
 func (t *WebsocketTransport) Proxy() bool {

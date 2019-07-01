@@ -32,7 +32,7 @@ var WssFmt = mafmt.And(mafmt.TCP, mafmt.Base(WssProtocol.Code))
 // WsCodec is the multiaddr-net codec definition for the websocket transport
 var WssCodec = &manet.NetCodec{
 	NetAddrNetworks:  []string{"websocket-tls"},
-	ProtocolName:     "ws",
+	ProtocolName:     "wss",
 	ConvertMultiaddr: ConvertWebsocketMultiaddrToNetAddr,
 	ParseNetAddr:     ParseWebsocketNetAddr,
 }
